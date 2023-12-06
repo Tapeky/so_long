@@ -6,22 +6,27 @@
 #    By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/03 19:54:19 by tsadouk           #+#    #+#              #
-#    Updated: 2023/12/03 19:56:17 by tsadouk          ###   ########.fr        #
+#    Updated: 2023/12/06 14:31:06 by tsadouk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra 
+
+SRCS = main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-NAME = so_long.a
+NAME = test
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-		ar rcs $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -Lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -Wall -Wextra -Werror -I/usr/include -Imlx -O3 -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
