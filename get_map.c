@@ -6,11 +6,10 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:25:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/07 13:47:55 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/07 16:16:21 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include <mlx.h>
 #include "so_long.h"
 #include <fcntl.h>
 #include "Get_Next_Line/get_next_line.h"
@@ -59,7 +58,7 @@ char	**get_map(void)
 	return (map);
 }
 
-int	main(void)
+/*int	main(void)
 {
 	char	**map;
 	int		i;
@@ -73,4 +72,4 @@ int	main(void)
 		i++;
 	}
 	return (0);
-}
+}*/

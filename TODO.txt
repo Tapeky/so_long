@@ -1,4 +1,5 @@
-- Cree une fenetre; // Done
+- Cree une fenetre;
+	Cree une fenetre qui peux changer de taille
 
 - Cree une map
     - Comment faire ?
@@ -11,4 +12,5 @@
     - deplacement avec "W A S D"
     - le joueur ne peux pas se deplacer dans les murs
         detection des murs pdt la gestion d erreur de carte ?
+	- ESC doit fermre la fenetre et quitter le programmer proprement
 

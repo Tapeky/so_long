@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:47:36 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/07 14:50:16 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/07 16:00:48 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,10 @@ t_queue	*create_queue(int capacity)
 bool	is_empty(t_queue *queue)
 {
 	return (queue->front == queue->rear);
+}
+
+void	enqueue(t_queue *queue, t_queue_node node)
+{
+	if (is_empty)
+	queue->rear++;
 }
