@@ -6,72 +6,70 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:25:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/06 17:54:42 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:47:55 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include <mlx.h>
 #include "so_long.h"
-#include "get_next_line.h"
+#include <fcntl.h>
+#include "Get_Next_Line/get_next_line.h"
 #include "Libft/libft.h"
 #include <stdio.h>
 
-int	map_height()
+int	get_height(void)
 {
-	char *line;
-	int	height;
+	int		fd;
+	int		height;
+	char	*line;
 
-	line = malloc(sizeof(char) * 1);
-	if (!line)
-		return (-1);
 	height = 0;
-	while (line = get_next_line(0))
+	line = NULL;
+	fd = open("map.txt", O_RDONLY);
+	while (get_next_line(fd))
 	{
 		height++;
 		free(line);
 	}
-	free(line);
+	close(fd);
 	return (height);
 }
 
-char **get_map(void)
+char	**get_map(void)
 {
-	int height;
-	int i;
-	char *line;
-	char **map;
+	int		fd;
+	int		i;
+	char	*line;
+	char	**map;
 
-	printf("get_map\n");
-	height = map_height();
-	map = (char **)malloc(sizeof(char *) * (height + 1));
-	map[height + 1] = NULL;
-	if (!map)
-		return NULL;
 	i = 0;
-	while (line = get_next_line(0))
-	{
-		printf("line = %s\n", line);
-		map[i] = ft_strdup(line);
-		printf("map[%d] = %s\n", i, map[i]);
-		free(line);
-		i++;
-	}
-	return map;
-}
-int main (void)
-{
-	char **map = get_map();
-	int height = map_height();
-	int i = 0;
-	
+	fd = open("map.txt", O_RDONLY);
+	line = NULL;
+	map = malloc(sizeof(char *) * (get_height() + 1));
 	if (!map)
+		return (NULL);
+	while ((line = get_next_line(fd)))
 	{
-		printf("ERROR\n");
-		return (-1);
+		map[i] = ft_strdup(line);
+		i++;
+		free(line);
 	}
+	map[i] = NULL;
+	close(fd);
+	return (map);
+}
+
+int	main(void)
+{
+	char	**map;
+	int		i;
+
+	i = 0;
+	printf("height = %d\n", get_height());
+	map = get_map();
 	while (map[i] != NULL)
 	{
-		printf("%s\n", map[i]);
+		printf("%s", map[i]);
 		i++;
 	}
 	return (0);
