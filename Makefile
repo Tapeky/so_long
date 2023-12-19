@@ -6,7 +6,7 @@
 #    By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/03 19:54:19 by tsadouk           #+#    #+#              #
-#    Updated: 2023/12/19 12:34:59 by tsadouk          ###   ########.fr        #
+#    Updated: 2023/12/19 14:06:24 by tsadouk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS =	main.c \
 		put_texture.c \
 		GNL/get_next_line.c \
 		GNL/get_next_line_utils.c \
+		mouvements.c \
 		
 OBJS = $(SRCS:.c=.o)
 

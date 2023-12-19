@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 19:08:33 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/18 20:12:02 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/19 13:50:18 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	put_walls(char **map, t_texture *texture, t_data *data)
 		{
 			if (map[i][j] == '1')
 			{
-				mlx_put_image_to_window(data->mlx, data->mlx_win, texture->wall, j * 64, i * 64);
+				mlx_put_image_to_window(data->mlx, data->mlx_win,
+					texture->wall, j * 64, i * 64);
 			}
 			j++;
 		}
@@ -50,7 +51,8 @@ void	put_collectibles(char **map, t_texture *texture, t_data *data)
 		{
 			if (map[i][j] == 'C')
 			{
-				mlx_put_image_to_window(data->mlx, data->mlx_win, texture->collectible, j * 64, i * 64);
+				mlx_put_image_to_window(data->mlx, data->mlx_win,
+					texture->collectible, j * 64, i * 64);
 				data->collectibles_left++;
 			}
 			j++;
@@ -71,7 +73,8 @@ void	put_exit(char **map, t_texture *texture, t_data *data)
 		while (map[i][j])
 		{
 			if (map[i][j] == 'E')
-				mlx_put_image_to_window(data->mlx, data->mlx_win, texture->exit, j * 64, i * 64);
+				mlx_put_image_to_window(data->mlx, data->mlx_win,
+					texture->exit, j * 64, i * 64);
 			j++;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:07:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/19 12:39:04 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/19 15:06:05 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,72 +61,17 @@ int del_square(void *mlx, void *mlx_win, int x, int y)
 int handle_key_press(int keycode, void *data_ptr)
 {
 	t_data	*data = (t_data *)data_ptr;
-	printf("collectibles_left: %d\n", ((t_data *)data_ptr)->collectibles_left);
-	if (keycode == 82 && data->player->y != 0 && data->map.map[data->player->y / 64 - 1][data->player-> x / 64] != '1') // Up arrow key
-    {
-		data->steps++;
-        del_square(data->mlx, data->mlx_win, data->player->x, data->player->y); // Delete the square at the old position(data->player->x, data->player->y
-        data->player->y -= 64; // Move the square upwards by 64 pixels
-		data->color += 1;
-		if (data->map.map[data->player->y / 64][data->player-> x / 64] == 'C')
-		{
-			data->map.map[data->player->y / 64][data->player-> x / 64] = '0';
-			data->collectibles_left--;
-			printf("collectibles_left: %d\n", data->collectibles_left);
-		}
-		
-		print_square(data->mlx, data->mlx_win, data->player->x, data->player->y, data->color); // Print the square at the new position
-    }
-	else if (keycode == 81 && data->player->y != (get_height() - 1) * 64 && data->map.map[data->player->y / 64 + 1][data->player-> x / 64] != '1') // Down arrow key
-	{
-		data->steps++;
-		del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
-		data->player->y += 64; // Move the square downwards by 64 pixels
-		data->color += 1;
-		if (data->map.map[data->player->y / 64][data->player-> x / 64] == 'C')
-		{
-			data->map.map[data->player->y / 64][data->player-> x / 64] = '0';
-			data->collectibles_left--;
-			printf("collectibles_left: %d\n", data->collectibles_left);
-		}
-		print_square(data->mlx, data->mlx_win, data->player->x, data->player->y, data->color); // Print the square at the new position
-	}
-	else if (keycode == 80 && data->player->x != 0  && data->map.map[data->player->y / 64][data->player-> x / 64 - 1] != '1') // Left arrow key
-	{
-		data->steps++;
-		del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
-		data->player->x -= 64; // Move the square to the left by 64 pixels
-		data->color += 1;
-		if (data->map.map[data->player->y / 64][data->player-> x / 64] == 'C')
-		{
-			data->map.map[data->player->y / 64][data->player-> x / 64] = '0';
-			data->collectibles_left--;
-			printf("collectibles_left: %d\n", data->collectibles_left);
-		}
-		print_square(data->mlx, data->mlx_win, data->player->x, data->player->y, data->color); // Print the square at the new position
-	}
-	else if (keycode == 79 && data->player->x != (get_width() - 1) * 64 - 20 && data->map.map[data->player->y / 64][data->player-> x / 64 + 1] != '1') // Right arrow key
-	{
-		data->steps++;
-		del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
-		data->player->x += 64; // Move the square to the right by 10 pixels
-		data->color += 1;
-		if (data->map.map[data->player->y / 64][data->player-> x / 64] == 'C')
-		{
-			data->map.map[data->player->y / 64][data->player-> x / 64] = '0';
-			data->collectibles_left--;
-			printf("collectibles_left: %d\n", data->collectibles_left);
-		}
-		print_square(data->mlx, data->mlx_win, data->player->x, data->player->y, data->color); // Print the square at the new position
-	}
-	else if (keycode == 41) // ESC key
+	if (keycode == 82)
+		move_up(data);
+	if (keycode == 81)
+		move_down(data);
+	if (keycode == 80)
+		move_left(data);
+	if (keycode == 79)
+		move_right(data);
+	if (keycode == 41)
 		exit_game(data->mlx, data->mlx_win);
-	mlx_string_put(data->mlx, data->mlx_win, 50, 50, 0x00FF0000, ft_itoa(data->steps));
-	if (data->collectibles_left == 0 && data->map.map[data->player->y / 64][data->player-> x / 64] == 'E')
-	{
-		mlx_string_put(data->mlx, data->mlx_win, data->map.width / 2, 50, 0x00FF0680, "You win!");
-		mlx_string_put(data->mlx, data->mlx_win, data->map.width / 2, 100, 0x00FF0680, "Press ESC to exit");
-	}
+	printf("collectibles_left: %d\n", ((t_data *)data_ptr)->collectibles_left);
     return (0);
 }
 void	put_all_textures(char **map, t_texture *texture, t_data *data)

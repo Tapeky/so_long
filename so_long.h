@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:39:48 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/18 20:31:42 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/19 14:11:03 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,12 @@ int		player_pos_y(char **map);
 void	put_walls(char **map, t_texture *texture, t_data *data);
 void	put_collectibles(char **map, t_texture *texture, t_data *data);
 void	put_exit(char **map, t_texture *texture, t_data *data);
+int	move_up(t_data *data);
+int	move_down(t_data *data);
+int	move_left(t_data *data);
+int	move_right(t_data *data);
+int print_square(void *mlx, void *mlx_win, int x, int y, int color);
+int del_square(void *mlx, void *mlx_win, int x, int y);
+void exit_game(void *mlx, void *mlx_win);
 
 #endif
