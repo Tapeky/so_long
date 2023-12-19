@@ -6,13 +6,13 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:25:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/07 16:16:21 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/12 15:50:21 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 #include <fcntl.h>
-#include "Get_Next_Line/get_next_line.h"
+#include "GNL/get_next_line.h"
 #include "Libft/libft.h"
 #include <stdio.h>
 
@@ -32,6 +32,21 @@ int	get_height(void)
 	}
 	close(fd);
 	return (height);
+}
+int	get_width(void)
+{
+	int		fd;
+	int		width;
+	char	*line;
+
+	width = 0;
+	line = NULL;
+	fd = open("map.txt", O_RDONLY);
+	line = get_next_line(fd);
+	width = ft_strlen(line);
+	free(line);
+	close(fd);
+	return (width - 1);
 }
 
 char	**get_map(void)
@@ -57,6 +72,20 @@ char	**get_map(void)
 	close(fd);
 	return (map);
 }
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i] != NULL)
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
 
 /*int	main(void)
 {

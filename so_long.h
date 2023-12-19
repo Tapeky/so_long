@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:39:48 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/07 16:13:43 by tsadouk          ###   ########.fr       */
+/*   Updated: 2023/12/18 20:31:42 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include "mlx/mlx.h"
-
-typedef struct s_data
-{
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
+# include "libft.h"
+# include "mlx.h"
 
 typedef struct s_position
 {
@@ -46,5 +38,46 @@ typedef struct s_queue
 	int				rear;
 	int				capacity;
 }				t_queue;
+
+typedef	struct s_texture
+{
+	void	*wall;
+	void	*collectible;
+	void	*exit;
+}				t_texture;
+
+typedef struct s_player
+{
+    int x;
+    int y;
+	int **hit_box;
+} t_player;
+
+typedef struct s_map
+{
+	char	**map;
+	int		height;
+	int		width;
+} t_map;
+
+typedef struct s_data
+{
+    void	*mlx;
+    void	*mlx_win;
+	int		color;
+	int		collectibles_left;
+	int		steps;
+	t_map map;
+    t_player *player;
+} t_data;
+
+int		get_height(void);
+int		get_width(void);
+char	**get_map(void);
+int		player_pos_x(char **map);
+int		player_pos_y(char **map);
+void	put_walls(char **map, t_texture *texture, t_data *data);
+void	put_collectibles(char **map, t_texture *texture, t_data *data);
+void	put_exit(char **map, t_texture *texture, t_data *data);
 
 #endif

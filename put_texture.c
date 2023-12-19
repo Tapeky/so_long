@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   put_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:48:51 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/09 19:07:49 by tsadouk          ###   ########.fr       */
+/*   Created: 2023/12/09 19:08:33 by tsadouk           #+#    #+#             */
+/*   Updated: 2023/12/18 20:12:02 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "Libft/libft.h"
 #include <stdio.h>
 
-int	player_pos_x(char **map)
+void	put_walls(char **map, t_texture *texture, t_data *data)
 {
 	int	i;
 	int	j;
@@ -27,16 +27,17 @@ int	player_pos_x(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'P')
-				return (j);
+			if (map[i][j] == '1')
+			{
+				mlx_put_image_to_window(data->mlx, data->mlx_win, texture->wall, j * 64, i * 64);
+			}
 			j++;
 		}
 		i++;
 	}
-	return (0);
 }
 
-int	player_pos_y(char **map)
+void	put_collectibles(char **map, t_texture *texture, t_data *data)
 {
 	int	i;
 	int	j;
@@ -47,13 +48,32 @@ int	player_pos_y(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'P')
-				return (i);
+			if (map[i][j] == 'C')
+			{
+				mlx_put_image_to_window(data->mlx, data->mlx_win, texture->collectible, j * 64, i * 64);
+				data->collectibles_left++;
+			}
 			j++;
 		}
 		i++;
 	}
-	return (0);
 }
 
+void	put_exit(char **map, t_texture *texture, t_data *data)
+{
+	int	i;
+	int	j;
 
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == 'E')
+				mlx_put_image_to_window(data->mlx, data->mlx_win, texture->exit, j * 64, i * 64);
+			j++;
+		}
+		i++;
+	}
+}

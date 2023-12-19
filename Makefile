@@ -6,27 +6,44 @@
 #    By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/03 19:54:19 by tsadouk           #+#    #+#              #
-#    Updated: 2023/12/06 14:31:06 by tsadouk          ###   ########.fr        #
+#    Updated: 2023/12/19 12:34:59 by tsadouk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME = test
+
 CC = clang
+CFLAGS = -Wall -Werror -Wextra -g  
 
-CFLAGS = -Wall -Werror -Wextra 
-
-SRCS = main.c \
-
+SRCS =	main.c \
+		check_map.c \
+		get_map.c \
+		put_texture.c \
+		GNL/get_next_line.c \
+		GNL/get_next_line_utils.c \
+		
 OBJS = $(SRCS:.c=.o)
 
-NAME = test
+LIBFT_SRC = Libft
+LIBFT = $(LIBFT_SRC)/libft.a
+
+MLX_SRC = MacroLibX
+MLX = $(MLX_SRC)/libmlx.so
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -Lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
+$(NAME): $(LIBFT) $(MLX) $(OBJS)
+	$(CC) $(CFLAGS) -lSDL2 $(OBJS) -o $(NAME) $(LIBFT) $(MLX)
+
+$(LIBFT):
+	make -C $(LIBFT_SRC) -j$(shell nproc)
+
+$(MLX):
+	make -C $(MLX_SRC) -j$(shell nproc)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -Wall -Wextra -Werror -I/usr/include -Imlx -O3 -c $< -o $@
+	#$(CC) $(CFLAGS) -I ./MacroLibX/includes -I Libft -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -I ./MacroLibX/includes -I Libft -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
