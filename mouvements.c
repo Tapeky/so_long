@@ -6,18 +6,34 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:57:35 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/19 15:54:45 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/10 08:21:33 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+#include <unistd.h>
+
+void	open_door(t_data *data)
+{
+	if (data->collectibles_left == 0 && !data->open_door_anim_state_did)
+	{
+		data->open_door_anim_state = 6;
+		data->open_door_anim_state_changed = 1;
+		data->open_door_anim_count_down = 1000;
+		data->open_door_anim_state_did = 1;
+	}
+}
+
 int	move_up(t_data *data)
 {
 	printf("x = %d, y = %d\n", data->player->x, data->player->y);
-	if (data->map.map[data->player->y / 64 - 1][data->player->x / 64] == '1')
+	if (data->map.map[data->player->y / 64 - 1][data->player->x / 64] == '1' ||
+	(data->map.map[data->player->y / 64 - 1][data->player->x / 64] == 'E'
+	&& data->collectibles_left != 0))
 		return (0);
-	del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
+	mlx_put_image_to_window(data->mlx, data->mlx_win, data->texture->bg,
+		data->player->x, data->player->y);
 	data->player->y -= 64;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
@@ -27,18 +43,21 @@ int	move_up(t_data *data)
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'E')
 	{
 		if (data->collectibles_left == 0)
-			exit_game(data->mlx, data->mlx_win);
+			exit_game(data->mlx, data->mlx_win, data);
 	}
-	print_square(data->mlx, data->mlx_win, data->player->x,
-		data->player->y, data->color);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->player_up, data->player->x, data->player->y);
 	return (0);
 }
 
 int	move_down(t_data *data)
 {
-	if (data->map.map[data->player->y / 64 + 1][data->player->x / 64] == '1')
+	if (data->map.map[data->player->y / 64 + 1][data->player->x / 64] == '1' ||
+	(data->map.map[data->player->y / 64 + 1][data->player->x / 64] == 'E'
+		&& data->collectibles_left != 0))
 		return (0);
-	del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->bg, data->player->x, data->player->y);
 	data->player->y += 64;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
@@ -48,18 +67,21 @@ int	move_down(t_data *data)
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'E')
 	{
 		if (data->collectibles_left == 0)
-			exit_game(data->mlx, data->mlx_win);
+			exit_game(data->mlx, data->mlx_win, data);
 	}
-	print_square(data->mlx, data->mlx_win, data->player->x,
-		data->player->y, data->color);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->player_down, data->player->x, data->player->y);
 	return (0);
 }
 
 int	move_left(t_data *data)
 {
-	if (data->map.map[data->player->y / 64][data->player->x / 64 - 1] == '1')
+	if (data->map.map[data->player->y / 64][data->player->x / 64 - 1] == '1' ||
+	(data->map.map[data->player->y / 64][data->player->x / 64 - 1] == 'E'
+	&& data->collectibles_left != 0))
 		return (0);
-	del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->bg, data->player->x, data->player->y);
 	data->player->x -= 64;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
@@ -69,18 +91,21 @@ int	move_left(t_data *data)
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'E')
 	{
 		if (data->collectibles_left == 0)
-			exit_game(data->mlx, data->mlx_win);
+			exit_game(data->mlx, data->mlx_win, data);
 	}
-	print_square(data->mlx, data->mlx_win, data->player->x,
-		data->player->y, data->color);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->player_left, data->player->x, data->player->y);
 	return (0);
 }
 
 int	move_right(t_data *data)
 {
-	if (data->map.map[data->player->y / 64][data->player->x / 64 + 1] == '1')
+	if (data->map.map[data->player->y / 64][data->player->x / 64 + 1] == '1' ||
+	(data->map.map[data->player->y / 64][data->player->x / 64 + 1] == 'E' &&
+	data->collectibles_left != 0))
 		return (0);
-	del_square(data->mlx, data->mlx_win, data->player->x, data->player->y);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->bg, data->player->x, data->player->y);
 	data->player->x += 64;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
@@ -90,9 +115,9 @@ int	move_right(t_data *data)
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'E')
 	{
 		if (data->collectibles_left == 0)
-			exit_game(data->mlx, data->mlx_win);
+			exit_game(data->mlx, data->mlx_win, data);
 	}
-	print_square(data->mlx, data->mlx_win, data->player->x,
-		data->player->y, data->color);
+	mlx_put_image_to_window(data->mlx, data->mlx_win,
+		data->texture->player_right, data->player->x, data->player->y);
 	return (0);
 }

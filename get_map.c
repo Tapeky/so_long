@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:25:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2023/12/12 15:50:21 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/10 09:13:19 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	get_height(void)
 
 	height = 0;
 	line = NULL;
-	fd = open("map.txt", O_RDONLY);
+	fd = open("map.ber", O_RDONLY);
 	while (get_next_line(fd))
 	{
 		height++;
@@ -33,6 +33,7 @@ int	get_height(void)
 	close(fd);
 	return (height);
 }
+
 int	get_width(void)
 {
 	int		fd;
@@ -41,7 +42,7 @@ int	get_width(void)
 
 	width = 0;
 	line = NULL;
-	fd = open("map.txt", O_RDONLY);
+	fd = open("map.ber", O_RDONLY);
 	line = get_next_line(fd);
 	width = ft_strlen(line);
 	free(line);
@@ -57,17 +58,20 @@ char	**get_map(void)
 	char	**map;
 
 	i = 0;
-	fd = open("map.txt", O_RDONLY);
+	fd = open("map.ber", O_RDONLY);
 	line = NULL;
 	map = malloc(sizeof(char *) * (get_height() + 1));
 	if (!map)
 		return (NULL);
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while (line)
 	{
 		map[i] = ft_strdup(line);
 		i++;
 		free(line);
+		line = get_next_line(fd);
 	}
+	free(line);
 	map[i] = NULL;
 	close(fd);
 	return (map);
@@ -85,20 +89,3 @@ void	free_map(char **map)
 	}
 	free(map);
 }
-
-
-/*int	main(void)
-{
-	char	**map;
-	int		i;
-
-	i = 0;
-	printf("height = %d\n", get_height());
-	map = get_map();
-	while (map[i] != NULL)
-	{
-		printf("%s", map[i]);
-		i++;
-	}
-	return (0);
-}*/
