@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:07:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/10 08:50:44 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/11 17:27:49 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,30 +129,23 @@ int	looooop(void *data_ptr)
 	return (0);
 }
 
+
 int main(void)
 {
+
 	t_texture *texture = malloc(sizeof(t_texture));
     t_player *player = malloc(sizeof(t_player));
     t_data *data = malloc(sizeof(t_data));
 
 	int *x = malloc(sizeof(int *));
 	int *y = malloc(sizeof(int *));
+	char **map_cpy;
 
 	(data->map).map = get_map();
 	(data->map).height = get_height();
 	(data->map).width = get_width();
-	int i = 0;
-	int j = 0;
-	while (data->map.map[i])
-	{
-		j = 0;
-		while (data->map.map[i][j])
-		{
-			printf("%c", data->map.map[i][j]);
-			j++;
-		}
-		i++;
-	}
+
+
 
 	data->open_door_anim_state = 0;
 	data->open_door_anim_state_changed = 0;
@@ -167,7 +160,19 @@ int main(void)
     
 	player->x = player_pos_x(data->map.map) * 64;
     player->y = player_pos_y(data->map.map) * 64;
-    
+
+	map_cpy = get_map();
+	map_cpy = spread(map_cpy, player_pos_x((data->map).map), player_pos_y((data->map).map));
+
+	
+	if (!handle_errors(data->map.map) || !is_valid_map(map_cpy))
+    {
+		printf("Error\nLa map n'est pas valide\n");
+		free(map_cpy);
+		return (0);
+	}
+	
+	free(map_cpy);
 	data->mlx = mlx_init();
 	texture->wall = mlx_png_file_to_image(data->mlx, "./textures/Wall.png", x, y);
 	texture->collectible = mlx_png_file_to_image(data->mlx, "./textures/Collec.png", x, y);
@@ -195,3 +200,5 @@ int main(void)
 
     return (0);
 }
+
+

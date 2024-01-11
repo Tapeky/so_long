@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:39:48 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/10 09:23:14 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/11 15:53:42 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,12 @@ int		move_down(t_data *data);
 int		move_left(t_data *data);
 int		move_right(t_data *data);
 void	exit_game(void *mlx, void *mlx_win, void *data_ptr);
+char	**spread(char **map, int x, int y);
+bool	is_valid_map(char **map);
+bool	handle_errors(char **map);
+bool	check_player(char **map);
+bool	check_walls(char **map);
+bool	check_exit(char **map);
+bool	check_collectibles(char **map);
 
 #endif

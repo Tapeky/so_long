@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:25:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/10 09:13:19 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/11 16:57:20 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	**get_map(void)
 	i = 0;
 	fd = open("map.ber", O_RDONLY);
 	line = NULL;
-	map = malloc(sizeof(char *) * (get_height() + 1));
+	map = ft_calloc(sizeof(char *), (get_height() + 1));
 	if (!map)
 		return (NULL);
 	line = get_next_line(fd);

@@ -6,7 +6,7 @@
 #    By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/03 19:54:19 by tsadouk           #+#    #+#              #
-#    Updated: 2023/12/19 14:06:24 by tsadouk          ###   ########.fr        #
+#    Updated: 2024/01/11 15:55:12 by tsadouk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRCS =	main.c \
 		GNL/get_next_line.c \
 		GNL/get_next_line_utils.c \
 		mouvements.c \
+		is_valid_map.c \
+		handle_errors.c \
 		
 OBJS = $(SRCS:.c=.o)
 
