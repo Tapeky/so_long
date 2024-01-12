@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:57:35 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/10 08:21:33 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/12 09:54:58 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	move_up(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->texture->bg,
 		data->player->x, data->player->y);
 	data->player->y -= 64;
+	data->steps++;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
 		data->collectibles_left--;
@@ -59,6 +60,7 @@ int	move_down(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->mlx_win,
 		data->texture->bg, data->player->x, data->player->y);
 	data->player->y += 64;
+	data->steps++;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
 		data->collectibles_left--;
@@ -83,6 +85,7 @@ int	move_left(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->mlx_win,
 		data->texture->bg, data->player->x, data->player->y);
 	data->player->x -= 64;
+	data->steps++;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
 		data->collectibles_left--;
@@ -107,6 +110,7 @@ int	move_right(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->mlx_win,
 		data->texture->bg, data->player->x, data->player->y);
 	data->player->x += 64;
+	data->steps++;
 	if (data->map.map[data->player->y / 64][data->player->x / 64] == 'C')
 	{
 		data->collectibles_left--;

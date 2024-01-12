@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:07:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/11 17:27:49 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/12 09:57:06 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	handle_key_press(int keycode, void *data_ptr)
 	if (data->collectibles_left == 0)
 		open_door(data);
 	printf("steps : %d\n", data->steps);
-	data->steps++;
 	if (keycode == 26)
 		move_up(data);
 	if (keycode == 22)
@@ -52,7 +51,6 @@ int	handle_key_press(int keycode, void *data_ptr)
 		move_right(data);
 	if (keycode == 41)
 		exit_game(data->mlx, data->mlx_win, data);
-	printf("collectibles_left: %d\n", ((t_data *)data_ptr)->collectibles_left);
 	return (0);
 }
 

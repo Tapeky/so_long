@@ -6,7 +6,7 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:13:22 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/11 17:41:59 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/12 09:31:19 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@
 char	**spread(char **map, int x, int y)
 {
 	map[y][x] = 'T';
-	if (map[y][x + 1] != '1' && map[y][x + 1] != 'T')
+	if (map[y][x + 1] != '1' && map[y][x + 1] != 'T' && x + 2 < get_width())
 	{
 		map[y][x + 1] = 'T';
 		spread(map, x + 1, y);
 	}
-	if (map[y][x - 1] != '1' && map[y][x - 1] != 'T')
+	if (map[y][x - 1] != '1' && map[y][x - 1] != 'T' && x - 1 > 0)
 	{
 		map[y][x - 1] = 'T';
 		spread(map, x - 1, y);
 	}
-	if (map[y + 1][x] != '1' && map[y + 1][x] != 'T')
+	if (map[y + 1][x] != '1' && map[y + 1][x] != 'T' && y + 2 < get_height())
 	{
 		map[y + 1][x] = 'T';
 		spread(map, x, y + 1);
 	}
-	if (map[y - 1][x] != '1' && map[y - 1][x] != 'T')
+	if (map[y - 1][x] != '1' && map[y - 1][x] != 'T' && y - 1 > 0)
 	{
 		map[y - 1][x] = 'T';
 		spread(map, x, y - 1);
