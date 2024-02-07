@@ -6,11 +6,11 @@
 #    By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/03 19:54:19 by tsadouk           #+#    #+#              #
-#    Updated: 2024/01/11 15:55:12 by tsadouk          ###   ########.fr        #
+#    Updated: 2024/01/16 15:59:05 by tsadouk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = test
+NAME = so_long
 
 CC = clang
 CFLAGS = -Wall -Werror -Wextra -g  
@@ -24,6 +24,10 @@ SRCS =	main.c \
 		mouvements.c \
 		is_valid_map.c \
 		handle_errors.c \
+		on_event.c \
+		initialize.c \
+		free_utils.c \
+		main_error_utils.c \
 		
 OBJS = $(SRCS:.c=.o)
 
@@ -53,6 +57,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME) $(OBJS_BONUS) libft.so
+	make fclean -C $(LIBFT_SRC)
 
 re: fclean all
 

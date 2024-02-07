@@ -6,15 +6,11 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 19:08:33 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/09 15:12:33 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:36:15 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include <fcntl.h>
-#include "GNL/get_next_line.h"
-#include "Libft/libft.h"
-#include <stdio.h>
 
 void	put_bg(char **map, t_texture *texture, t_data *data)
 {

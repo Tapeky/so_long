@@ -6,52 +6,73 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:07:40 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/12 09:57:06 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:36:35 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include <unistd.h>
-#include <stdlib.h>
 
-void	exit_game(void *mlx, void *mlx_win, void *data_ptr)
+int	main(int argc, char **argv)
 {
-	t_data	*data = (t_data *)data_ptr;
-	mlx_destroy_image(mlx, data->texture->wall);
-	mlx_destroy_image(mlx, data->texture->collectible);
-	mlx_destroy_image(mlx, data->texture->exit);
-	mlx_destroy_image(mlx, data->texture->player_up);
-	mlx_destroy_image(mlx, data->texture->player_down);
-	mlx_destroy_image(mlx, data->texture->player_left);
-	mlx_destroy_image(mlx, data->texture->player_right);
-	mlx_destroy_image(mlx, data->texture->bg);
-	mlx_destroy_image(mlx, data->texture->exit2);
-	mlx_destroy_image(mlx, data->texture->exit3);
-	mlx_destroy_image(mlx, data->texture->exit4);
-	mlx_destroy_image(mlx, data->texture->exit5);
-	mlx_destroy_image(mlx, data->texture->exit6);
-	mlx_destroy_window(mlx, mlx_win);
-	mlx_destroy_display(mlx);
+	t_texture	*texture;
+	t_player	*player;
+	t_data		*data;
+	char		**map_cpy;
+
+	main_error_handler(argc, argv);
+	player = malloc(sizeof(t_player));
+	data = malloc(sizeof(t_data));
+	initialize_data(data, player, &map_cpy, argv[1]);
+	handle_map_errors(data->map.map, map_cpy, argv[1], data);
+	handle_map_errors2(data->map.map, argv[1], data);
+	texture = malloc(sizeof(t_texture));
+	initialize_graphics(data, texture);
+	run_game_loop(data);
+	return (0);
+}
+
+void	exit_game(t_data *data)
+{
+	mlx_destroy_image(data->mlx, data->texture->wall);
+	mlx_destroy_image(data->mlx, data->texture->collectible);
+	mlx_destroy_image(data->mlx, data->texture->exit);
+	mlx_destroy_image(data->mlx, data->texture->player_up);
+	mlx_destroy_image(data->mlx, data->texture->player_down);
+	mlx_destroy_image(data->mlx, data->texture->player_left);
+	mlx_destroy_image(data->mlx, data->texture->player_right);
+	mlx_destroy_image(data->mlx, data->texture->bg);
+	mlx_destroy_window(data->mlx, data->mlx_win);
+	mlx_destroy_display(data->mlx);
+	free(data->texture);
+	free_error_1(data);
 	exit(0);
 }
 
-int	handle_key_press(int keycode, void *data_ptr)
+void	load_textures(t_texture *texture, t_data *data)
 {
-	t_data	*data = (t_data *)data_ptr;
-	if (data->collectibles_left == 0)
-		open_door(data);
-	printf("steps : %d\n", data->steps);
-	if (keycode == 26)
-		move_up(data);
-	if (keycode == 22)
-		move_down(data);
-	if (keycode == 4)
-		move_left(data);
-	if (keycode == 7)
-		move_right(data);
-	if (keycode == 41)
-		exit_game(data->mlx, data->mlx_win, data);
-	return (0);
+	int	*x;
+	int	*y;
+
+	x = malloc(sizeof(int));
+	y = malloc(sizeof(int));
+	texture->wall = mlx_png_file_to_image(data->mlx,
+			"./textures/Wall.png", x, y);
+	texture->collectible = mlx_png_file_to_image(data->mlx,
+			"./textures/Collec.png", x, y);
+	texture->exit = mlx_png_file_to_image(data->mlx,
+			"./textures/doors1.png", x, y);
+	texture->player_up = mlx_png_file_to_image(data->mlx,
+			"./textures/up_sprite.png", x, y);
+	texture->player_down = mlx_png_file_to_image(data->mlx,
+			"./textures/down_sprite.png", x, y);
+	texture->player_left = mlx_png_file_to_image(data->mlx,
+			"./textures/left_sprite.png", x, y);
+	texture->player_right = mlx_png_file_to_image(data->mlx,
+			"./textures/right_sprite.png", x, y);
+	texture->bg = mlx_png_file_to_image(data->mlx,
+			"./textures/bg.png", x, y);
+	free(x);
+	free(y);
 }
 
 void	put_all_textures(char **map, t_texture *texture, t_data *data)
@@ -62,141 +83,9 @@ void	put_all_textures(char **map, t_texture *texture, t_data *data)
 	put_exit(map, texture, data);
 }
 
-int	looooop(void *data_ptr)
+void	run_game_loop(t_data *data)
 {
-	t_data *data = (t_data *)data_ptr;
-	
-	if (data->open_door_anim_state == 6 && data->open_door_anim_state_changed)
-	{
-		mlx_put_image_to_window(data->mlx, data->mlx_win,
-			data->texture->exit, data->door_x, data->door_y);
-		data->open_door_anim_state_changed = 0;
-	}
-	else if (data->open_door_anim_state == 5 && data->open_door_anim_state_changed)
-	{
-		mlx_destroy_image(data->mlx, data->texture->exit5);
-		mlx_put_image_to_window(data->mlx, data->mlx_win,
-			data->texture->exit2, data->door_x, data->door_y);
-		data->open_door_anim_state_changed = 0;
-	}
-	else if (data->open_door_anim_state == 4 && data->open_door_anim_state_changed)
-	{
-		mlx_destroy_image(data->mlx, data->texture->exit5);
-		mlx_put_image_to_window(data->mlx, data->mlx_win,
-			data->texture->exit3, data->door_x, data->door_y);
-		data->open_door_anim_state_changed = 0;
-	}
-	else if (data->open_door_anim_state == 3 && data->open_door_anim_state_changed)
-	{
-		mlx_destroy_image(data->mlx, data->texture->exit5);
-		mlx_put_image_to_window(data->mlx, data->mlx_win,
-			data->texture->exit4, data->door_x, data->door_y);
-		data->open_door_anim_state_changed = 0;
-	}
-	else if (data->open_door_anim_state == 2 && data->open_door_anim_state_changed)
-	{
-		mlx_destroy_image(data->mlx, data->texture->exit5);
-		mlx_put_image_to_window(data->mlx, data->mlx_win,
-			data->texture->exit5, data->door_x, data->door_y);
-		data->open_door_anim_state_changed = 0;
-	}
-	else if (data->open_door_anim_state == 1 && data->open_door_anim_state_changed)
-	{
-		mlx_destroy_image(data->mlx, data->texture->exit5);
-		mlx_put_image_to_window(data->mlx, data->mlx_win,
-			data->texture->exit6, data->door_x, data->door_y);
-		data->open_door_anim_state_changed = 0;
-	}
-
-	if (data->open_door_anim_state > 0)
-	{
-		printf("open_door_anim_count_down: %d\n", data->open_door_anim_count_down);
-		if (data->open_door_anim_count_down == 0)
-		{
-			data->open_door_anim_state--;
-			printf("open_door_anim_state: %d\n", data->open_door_anim_state);
-			data->open_door_anim_count_down = 5000;
-			data->open_door_anim_state_changed = 1;
-		}
-		else
-			data->open_door_anim_count_down--;
-	}
-
-	//printf("frames: %llu\n", data->frames);
-	data->frames++;
-	return (0);
+	mlx_on_event(data->mlx, data->mlx_win, 0, handle_key_press, data);
+	mlx_on_event(data->mlx, data->mlx_win, 5, handle_cross_click, data);
+	mlx_loop(data->mlx);
 }
-
-
-int main(void)
-{
-
-	t_texture *texture = malloc(sizeof(t_texture));
-    t_player *player = malloc(sizeof(t_player));
-    t_data *data = malloc(sizeof(t_data));
-
-	int *x = malloc(sizeof(int *));
-	int *y = malloc(sizeof(int *));
-	char **map_cpy;
-
-	(data->map).map = get_map();
-	(data->map).height = get_height();
-	(data->map).width = get_width();
-
-
-
-	data->open_door_anim_state = 0;
-	data->open_door_anim_state_changed = 0;
-	data->open_door_anim_count_down = 0;
-	data->open_door_anim_state_did = 0;
-	
-	data->color = 0x00FF0000;
-    data->player = player;
-	data->collectibles_left = 0;
-	data->steps = 0;
-
-    
-	player->x = player_pos_x(data->map.map) * 64;
-    player->y = player_pos_y(data->map.map) * 64;
-
-	map_cpy = get_map();
-	map_cpy = spread(map_cpy, player_pos_x((data->map).map), player_pos_y((data->map).map));
-
-	
-	if (!handle_errors(data->map.map) || !is_valid_map(map_cpy))
-    {
-		printf("Error\nLa map n'est pas valide\n");
-		free(map_cpy);
-		return (0);
-	}
-	
-	free(map_cpy);
-	data->mlx = mlx_init();
-	texture->wall = mlx_png_file_to_image(data->mlx, "./textures/Wall.png", x, y);
-	texture->collectible = mlx_png_file_to_image(data->mlx, "./textures/Collec.png", x, y);
-	texture->exit = mlx_png_file_to_image(data->mlx, "./textures/doors1.png", x, y);
-	texture->player_up = mlx_png_file_to_image(data->mlx, "./textures/up_sprite.png", x, y);
-	texture->player_down = mlx_png_file_to_image(data->mlx, "./textures/down_sprite.png", x, y);
-	texture->player_left = mlx_png_file_to_image(data->mlx, "./textures/left_sprite.png", x, y);
-	texture->player_right = mlx_png_file_to_image(data->mlx, "./textures/right_sprite.png", x, y);
-	texture->bg = mlx_png_file_to_image(data->mlx, "./textures/bg.png", x, y);
-	texture->exit2 = mlx_png_file_to_image(data->mlx, "./textures/doors2.png", x, y);
-	texture->exit3 = mlx_png_file_to_image(data->mlx, "./textures/doors3.png", x, y);
-	texture->exit4 = mlx_png_file_to_image(data->mlx, "./textures/doors4.png", x, y);
-	texture->exit5 = mlx_png_file_to_image(data->mlx, "./textures/doors5.png", x, y);
-	texture->exit6 = mlx_png_file_to_image(data->mlx, "./textures/doors6.png", x, y);
-	data->texture = texture;
-	mlx_loop_hook(data->mlx, looooop, data);
-	data->mlx_win = mlx_new_window(data->mlx, data->map.width * 64, data->map.height * 64, "MisthAA!");
-	put_all_textures(data->map.	map, texture, data);
-	mlx_put_image_to_window(data->mlx, data->mlx_win, data->texture->player_up, player->x, player->y);
-
-    mlx_on_event(data->mlx, data->mlx_win, 0, handle_key_press, data); // Deplacement
-    mlx_loop(data->mlx);
-    free(player);
-    free(data);
-
-    return (0);
-}
-
-

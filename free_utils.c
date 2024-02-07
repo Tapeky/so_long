@@ -1,74 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:48:51 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/16 15:18:22 by tsadouk          ###   ########.fr       */
+/*   Created: 2024/01/14 16:21:40 by tsadouk           #+#    #+#             */
+/*   Updated: 2024/01/16 14:52:07 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	player_pos_x(char **map)
+void	free_error_1(t_data *data)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	while (map[i])
+	while (i < data->map.height)
 	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == 'P')
-				return (j);
-			j++;
-		}
+		free(data->map.map[i]);
 		i++;
 	}
-	return (0);
+	free(data->map.map);
+	free(data->player);
+	free(data);
 }
 
-int	player_pos_y(char **map)
+void	free_error_2(t_data *data, char **map_cpy)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	while (map[i])
+	while (i < data->map.height)
 	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == 'P')
-				return (i);
-			j++;
-		}
+		free(map_cpy[i]);
+		free(data->map.map[i]);
 		i++;
 	}
-	return (0);
+	free(map_cpy);
+	free(data->map.map);
+	free(data->player);
+	free(data);
 }
 
-bool	unvalid_char_in_map(char **map)
+void	free_map(char **map)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (map[i])
 	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (!(map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'C'
-				|| map[i][j] == 'E' || map[i][j] == 'P'))
-				return (false);
-			j++;
-		}
+		if (map[i] != NULL)
+			free(map[i]);
 		i++;
 	}
-	return (true);
+	free(map);
 }

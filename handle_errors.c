@@ -6,12 +6,11 @@
 /*   By: tsadouk <tsadouk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:51:18 by tsadouk           #+#    #+#             */
-/*   Updated: 2024/01/11 17:36:23 by tsadouk          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:11:22 by tsadouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-// Quel sont les erreurs ? si la map n est pas valide, si il n'y a pas de collectibles, si il n'y a pas de sortie
 
 bool	check_collectibles(char **map)
 {
@@ -58,18 +57,18 @@ bool	check_exit(char **map)
 	}
 	if (exit != 1)
 		return (false);
-	return (true);	
+	return (true);
 }
 
-bool	check_walls(char **map) // si il n'y a pas de murs
+bool	check_walls(char **map, char *path_to_map)
 {
 	int	i;
 	int	j;
-	int height;
-	int width;
+	int	height;
+	int	width;
 
-	height = get_height();
-	width = get_width();
+	height = get_height(path_to_map);
+	width = get_width(path_to_map);
 	i = 0;
 	while (i < height)
 	{
@@ -100,7 +99,7 @@ bool	check_player(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'P') // 
+			if (map[i][j] == 'P')
 				player++;
 			j++;
 		}
@@ -108,18 +107,18 @@ bool	check_player(char **map)
 	}
 	if (player != 1)
 		return (false);
-	return (true);	
+	return (true);
 }
 
-bool	handle_errors(char **map)
+bool	handle_errors(char **map, char *path_to_map)
 {
-	if (!check_collectibles(map)) // si il n'y a pas de collectibles
+	if (!check_collectibles(map))
 		return (false);
-	if (!check_exit(map)) // si il n'y a pas de sortie
+	if (!check_exit(map))
 		return (false);
-	if (!check_player(map)) // si il n'y a pas de joueur
+	if (!check_player(map))
 		return (false);
-	if (!check_walls(map)) // si il n'y a pas de murs
+	if (!check_walls(map, path_to_map))
 		return (false);
 	return (true);
 }
